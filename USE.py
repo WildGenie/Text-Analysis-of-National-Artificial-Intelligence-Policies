@@ -21,7 +21,7 @@ def similarityWithUSE(messages, countries):
         corr = np.inner(message_embeddings_, message_embeddings_)
         print("correlations")
 
-        for i in range(0,len(countries)):
+        for i in range(len(countries)):
             print(countries[i], corr[i])
         plots.heatmap(countries, countries, corr)
 

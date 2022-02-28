@@ -23,20 +23,16 @@ def listAllFiles(path):
     return os.listdir(path)
 
 def preprocess(text):
-    tokens = []
     review = text.lower() #Convert to lower-case words
     raw_word_tokens = re.findall(r'(?:\w\w+)', review,flags = re.UNICODE) #remove pontuaction
-    word_tokens = [w for w in raw_word_tokens if not w in stopwords] # do not add stop words
-    tokens.extend(word_tokens)
-    return tokens
+    word_tokens = [w for w in raw_word_tokens if w not in stopwords]
+    return list(word_tokens)
 
 def preprocessWithStem(text):
-    tokens = []
     review = text.lower() #Convert to lower-case words
     raw_word_tokens = re.findall(r'(?:\w\w+)', review,flags = re.UNICODE) #remove pontuaction
-    word_tokens = [ps.stem(w) for w in raw_word_tokens if not w in stopwords] # do not add stop words
-    tokens.extend(word_tokens)
-    return tokens
+    word_tokens = [ps.stem(w) for w in raw_word_tokens if w not in stopwords]
+    return list(word_tokens)
 
 def readFiles(pathToTheFiles):
     allFiles=listAllFiles(pathToTheFiles)

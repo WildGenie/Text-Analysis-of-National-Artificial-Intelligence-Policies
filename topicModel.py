@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 def showVIS(lda_modelVIS, numTopics):
     vis = pyLDAvis.gensim.prepare(lda_modelVIS, corpus, dictionary_LDA)
     ##pyLDAvis.show(vis)
-    pyLDAvis.save_html(vis, 'lda'+str(numTopics)+'.html')
+    pyLDAvis.save_html(vis, f'lda{str(numTopics)}.html')
 
 def compute_coherence_values(dictionary, corpus, texts, start, limit, step):
 
@@ -43,13 +43,13 @@ def compute_coherence_values(dictionary, corpus, texts, start, limit, step):
 
         # print the extracted topics
         for i,topic in model.show_topics(formatted=True, num_topics=num_topics, num_words=15):
-            print(str(i)+": "+ topic)
+            print(f'{str(i)}: {topic}')
             print()
         print(coherencemodel.get_coherence())
         N=len(model[corpus])
 
         # calculate the probability of a topic in a document by averaging the scores
-        for i in range(0,N):
+        for i in range(N):
             country = ''.join(i for i in df['country'][i] if not i.isdigit())
 
             for a in model[corpus[i]]:
@@ -59,7 +59,7 @@ def compute_coherence_values(dictionary, corpus, texts, start, limit, step):
                 else:
                     overallScores[country][a[0]] = 0
                     topicsPerCountry[country][a[0]] = 1
-                    overallScores[country][a[0]] = overallScores[country][a[0]] + a[1]
+                    overallScores[country][a[0]] += a[1]
 
         print (overallScores)
         print (topicsPerCountry)
@@ -70,8 +70,8 @@ def compute_coherence_values(dictionary, corpus, texts, start, limit, step):
                 avg=float(s)/float(topicsPerCountry[country][t])
                 print(country, ",", t, ",",avg)
 
-        #show a visualisation on the topics
-        #showVIS(model,num_topics)
+            #show a visualisation on the topics
+            #showVIS(model,num_topics)
     return model_list, coherence_values
 
 
@@ -137,7 +137,7 @@ if __name__ == '__main__':
     #split into paragraphs
     for k,i in myDictOriginal.items():
         sentences=i.split('\n\n')
-        for count in range(0,len(sentences)-1):
+        for count in range(len(sentences)-1):
             myDictOriginalParagraphs[k + str(count)]=sentences[count]
 
     df['country'] = myDictOriginalParagraphs.keys()
@@ -193,7 +193,9 @@ if __name__ == '__main__':
 
     #
     # # Show graph with the coherence scores
-    limit=15; start=2; step=1;
+    limit=15
+    start=2
+    step=1;
     x = range(start, limit, step)
     plt.plot(x, coherence_values)
     plt.xlabel("Num Topics")

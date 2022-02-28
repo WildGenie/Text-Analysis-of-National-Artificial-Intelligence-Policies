@@ -5,7 +5,7 @@ import numpy as np
 def wordClouds(texts,countries):
 
     fig = plt.figure(figsize=(10,10))
-    for i in range(0,len(countries)):
+    for i in range(len(countries)):
         ax = fig.add_subplot(5,2,i+1)
         wordcloud = WordCloud(max_words=50,
                 background_color ='white',
